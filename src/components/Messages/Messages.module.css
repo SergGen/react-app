@@ -1,18 +1,15 @@
 .message_form {
     border: none;
-    width: 600px;
+    min-width: 600px;
     margin: 15px auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
 }
-.send_btn {
-    margin: 15px 0;
-}
 
 .area {
-    width: 600px;
-    height: 100px;
+    width: 100%;
     padding: 8px;
+    margin-bottom: 20px;
 }

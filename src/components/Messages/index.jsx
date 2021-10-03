@@ -1,25 +1,44 @@
-import React from 'react'
+import {useState, useEffect, useRef} from 'react'
+import { Button, TextareaAutosize } from '@material-ui/core'
+import PropTypes from 'prop-types'
 import styles from './Messages.module.css'
 
-export const Messages = (props) => {
-  const [inputValue,setInputValue] = React.useState('');
+export const Messages = ({onSubmit}) => {
+  const [inputValue, setInputValue] = useState('');
 
-  let areaInput = React.createRef();
+  let areaInput = useRef(null);
 
   let onChange = (event) => {
     setInputValue(event.target.value);
   }
 
+  useEffect(() => {
+    areaInput.current?.focus();
+  },[inputValue])
+
   let sendHandler = () => {
     if(inputValue.trim() !== '') {
-      props.onSubmit(inputValue.trim());
+      onSubmit(inputValue.trim());
     }
     setInputValue('');
-    areaInput.current.focus();
+    areaInput.current?.focus();
   }
 
   return <form className={styles.message_form} onSubmit={(event) => event.preventDefault()}>
-    <textarea className={styles.area} name="chat" ref={areaInput} value={inputValue} onChange={onChange} />
-    <button className={styles.send_btn} onClick={sendHandler}>Send message</button>
+    <TextareaAutosize
+      aria-label="You"
+      className={styles.area}
+      placeholder="Write your message here"
+      variant="outlined"
+      ref={areaInput}
+      value={inputValue}
+      onChange={onChange}
+    />
+
+    <Button variant="contained" onClick={sendHandler}>Send message</Button>
   </form>
+}
+
+Messages.propTypes = {
+  onSubmit: PropTypes.func.isRequired
 }
