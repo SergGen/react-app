@@ -1,24 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import { Chat } from './components/Chat'
+import { useState } from 'react'
+import { CssBaseline, Grid } from '@material-ui/core'
+import {ChatList} from './components/ChatList'
 
 function App() {
+
+  const [chatList, setChatList] = useState([{id: 'xxx', name: 'Some chat', messages: []}]);
+
+  let onAddNewChat = (newChat) => {
+    setChatList([...chatList, newChat]);
+  }
+
+  let onUpdateChat = (updatedChat) => {
+    setChatList([updatedChat,...chatList.filter(chat => chat.id !== updatedChat.id)]);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <CssBaseline />
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+          <ChatList chatList={chatList} />
+        </Grid>
+        <Grid item xs={8}>
+          <Chat chat={chatList[0]} onUpdateChat={onUpdateChat} />
+        </Grid>
+      </Grid>
+    </>
   );
 }
 
