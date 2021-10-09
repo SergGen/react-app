@@ -1,39 +1,67 @@
 import PropTypes from 'prop-types'
 import {useState, useEffect} from 'react'
-import { RenderList, RenderListTypes } from '../RenderList'
-import { Messages } from '../Messages'
-import { Container } from '@material-ui/core'
+import { MessageList, MessageListTypes } from '../MessageList'
+import { SendMessageForm } from '../SendMessageForm'
+import { Box } from '@material-ui/core'
 
-export const Chat = ({chat, onUpdateChat}) => {
+export const Chat = ({ chatId, chatList, onUpdateChat}) => {
 
-  const [incomingChat, setIncomingChat] = useState( chat || {});
+  let chat = {}
+  if(chatId){
+    chat = chatList.find(chat => chat.chatId === Number(chatId));
+  } else {
+    chat = chatList.slice()[0];
+  }
 
-  useEffect(() => { setIncomingChat(chat) }, [chat])
+  const [currentChat, setCurrentChat] = useState( chat || {} );
+
+  useEffect(() => { setCurrentChat(chat) }, [chatList])
 
   let onSubmit = (formState) => {
-    setIncomingChat({id: incomingChat.id, name: incomingChat.name, messages: [...incomingChat.messages, {author: 'You', text: formState, time: Date.now()}]});
+    setCurrentChat({
+      chatId: currentChat.chatId,
+      chatName: currentChat.chatName,
+      messages: [
+        ...currentChat.messages,
+        {messageAuthor: 'You', messageText: formState, messageTime: Date.now()}
+      ]
+    });
   }
 
   useEffect(() => {
-    if(incomingChat.messages.length > 0 && incomingChat.messages[incomingChat.messages.length - 1].author !== 'Bot'){
-      setTimeout(() => {setIncomingChat({id: incomingChat.id, name: incomingChat.name, messages: [...incomingChat.messages, {author: 'Bot', text: `Hi! I\`m a bot.`, time: Date.now()}]})}, 1500)
+    if(currentChat.messages.length > 0 && currentChat.messages[currentChat.messages.length - 1].messageAuthor !== 'Bot'){
+      setTimeout(() => {
+        setCurrentChat({
+          chatId: currentChat.chatId,
+          chatName: currentChat.chatName,
+          messages: [
+            ...currentChat.messages,
+            {messageAuthor: 'Bot', messageText: `Hi! I\`m a bot.`, messageTime: Date.now()}
+          ]
+        })
+      }, 1500)
     }
-    onUpdateChat(incomingChat);
-  }, [incomingChat]);
+    onUpdateChat(currentChat);
+  }, [currentChat]);
 
+  if(!chatId){
+    return <Box><h1>Choose chat</h1></Box>
+  }
   return (
-    <Container maxWidth="sm">
-      <Messages onSubmit={onSubmit} />
-      <RenderList messageList={incomingChat.messages} />
-    </Container>
+    <Box maxWidth="sm">
+      <SendMessageForm onSubmit={onSubmit} />
+      <MessageList messageList={currentChat.messages} />
+    </Box>
   );
 }
 
+
 Chat.propTypes = {
-  chat: PropTypes.shape({
-    id: PropTypes.string,
-    name: PropTypes.string,
-    messages: PropTypes.arrayOf(PropTypes.shape(RenderListTypes))
-  }),
-  onUpdatedChat: PropTypes.func
+  chatList: PropTypes.arrayOf(PropTypes.shape({
+    chatId: PropTypes.number.isRequired,
+    chatName: PropTypes.string.isRequired,
+    messages: PropTypes.arrayOf(PropTypes.shape(MessageListTypes))
+  })),
+  onUpdateChat: PropTypes.func.isRequired,
+  chatId: PropTypes.string
 }

@@ -1,9 +1,9 @@
 import {useState, useEffect, useRef} from 'react'
 import { Button, TextareaAutosize } from '@material-ui/core'
 import PropTypes from 'prop-types'
-import styles from './Messages.module.css'
+import styles from './SendMessageForm.module.css'
 
-export const Messages = ({onSubmit}) => {
+export const SendMessageForm = ({onSubmit}) => {
   const [inputValue, setInputValue] = useState('');
 
   let areaInput = useRef(null);
@@ -39,6 +39,6 @@ export const Messages = ({onSubmit}) => {
   </form>
 }
 
-Messages.propTypes = {
+SendMessageForm.propTypes = {
   onSubmit: PropTypes.func.isRequired
 }
