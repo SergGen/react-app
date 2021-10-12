@@ -1,6 +1,6 @@
 import { Box, Grid } from '@material-ui/core'
-import { ChatList } from '../../components/ChatList'
-import { Chat } from '../../components/Chat'
+import { ChatList } from './ChatList'
+import { Chat } from './Chat'
 import { useState } from 'react'
 import { Route, useParams } from 'react-router-dom'
 import { NotFound } from '../NotFound'

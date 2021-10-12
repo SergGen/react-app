@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import {useState, useEffect} from 'react'
-import { MessageList, MessageListTypes } from '../MessageList'
-import { SendMessageForm } from '../SendMessageForm'
+import { MessageList, MessageListTypes } from './MessageList'
+import { SendMessageForm } from './SendMessageForm'
 import { Box } from '@material-ui/core'
 
 export const Chat = ({ chatId, chatList, onUpdateChat}) => {

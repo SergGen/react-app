@@ -1,6 +1,6 @@
 import { Box, Button, Link, List, ListItem } from '@material-ui/core'
 import PropTypes from 'prop-types'
-import { MessageListTypes } from '../MessageList'
+import { MessageListTypes } from '../Chat/MessageList'
 import { Link as RouterLink } from 'react-router-dom'
 import styles from './ChatList.module.css'
 
