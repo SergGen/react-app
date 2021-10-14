@@ -1,18 +1,22 @@
-import React from 'react'
+import {useState, useRef, useEffect} from 'react'
 import styles from './Messages.module.css'
 
-export const Messages = (props) => {
-  const [inputValue,setInputValue] = React.useState('');
+export const Messages = ({onSubmit}) => {
+  const [inputValue,setInputValue] = useState('');
 
-  let areaInput = React.createRef();
+  let areaInput = useRef(null);
 
   let onChange = (event) => {
     setInputValue(event.target.value);
   }
 
+  useEffect(()=>{
+    areaInput.current.focus();
+  },[]);
+
   let sendHandler = () => {
     if(inputValue.trim() !== '') {
-      props.onSubmit(inputValue.trim());
+      onSubmit(inputValue.trim());
     }
     setInputValue('');
     areaInput.current.focus();
