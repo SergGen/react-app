@@ -1,22 +1,25 @@
-import {Box, Checkbox} from "@material-ui/core";
-// import {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {Box, Button, Checkbox} from "@material-ui/core";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
+import {addText, increment, check1, check2} from "../../store/profile/slices";
+import {getCheckboxStatus1, getCheckboxStatus2, getCount, getText} from "../../store/profile/selectors";
 
 export const Profile = () => {
-    // const [checked1, setChecked1] = useState(false);
-    // const [checked2, setChecked2] = useState(false);
 
     const dispatch = useDispatch();
-    const CheckboxChecked1 = useSelector(state => state.checkboxState1);
-    const CheckboxChecked2 = useSelector(state => state.checkboxState2);
+    const checkboxStatus1 = useSelector(getCheckboxStatus1, shallowEqual);
+    const checkboxStatus2 = useSelector(getCheckboxStatus2, shallowEqual);
+    const count = useSelector(getCount, shallowEqual);
+    const texts = useSelector(getText, shallowEqual);
 
     return (
     <Box>
       <h1>Profile</h1>
-        <Checkbox checked={CheckboxChecked1} onClick={() => {dispatch({type: 'CHECK1'});dispatch({type: 'CHECK2'});}} />
-        <Checkbox checked={CheckboxChecked2} onClick={() => {dispatch({type: 'CHECK1'});dispatch({type: 'CHECK2'});}} />
-        {/*<Checkbox checked={checked1} onClick={() => {setChecked2(!checked2); setChecked1(!checked1);}} />*/}
-        {/*<Checkbox checked={checked2} onClick={() => {setChecked2(!checked2); setChecked1(!checked1);}} />*/}
+        <Checkbox checked={checkboxStatus1} onClick={() => { dispatch(check1()); dispatch(check2()); }} />
+        <Checkbox checked={checkboxStatus2} onClick={() => { dispatch(check1()); dispatch(check2()); }} />
+        <Button onClick={()=>dispatch(increment())}>Count</Button>
+        <p>{count}</p>
+        <Button onClick={()=>dispatch(addText(prompt()))}>Add Text</Button>
+        {texts.map((text, i) => <p key={i}>{text}</p>)}
     </Box>
   )
 }

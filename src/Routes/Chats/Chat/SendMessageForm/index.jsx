@@ -1,11 +1,14 @@
 import {useState, useEffect, useRef} from 'react'
 import { Button, TextareaAutosize } from '@material-ui/core'
-import PropTypes from 'prop-types'
 import styles from './SendMessageForm.module.css'
+import {sendMessage} from "../../../../store/chats/slices";
+import { useDispatch } from "react-redux";
+import {useParams} from "react-router-dom";
 
-export const SendMessageForm = ({onSubmit}) => {
+export const SendMessageForm = () => {
+  const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
-
+  let {chatId} = useParams();
   let areaInput = useRef(null);
 
   let onChange = (event) => {
@@ -14,11 +17,17 @@ export const SendMessageForm = ({onSubmit}) => {
 
   useEffect(() => {
     areaInput.current?.focus();
-  },[inputValue])
+  },[])
 
-  let sendHandler = () => {
+  const sendHandler = () => {
     if(inputValue.trim() !== '') {
-      onSubmit(inputValue.trim());
+      dispatch(sendMessage({
+        chatId: chatId,
+        msgData: {
+          author: 'You',
+          text: inputValue.trim()
+        }
+      }));
     }
     setInputValue('');
     areaInput.current?.focus();
@@ -34,11 +43,6 @@ export const SendMessageForm = ({onSubmit}) => {
       value={inputValue}
       onChange={onChange}
     />
-
-    <Button variant="contained" onClick={sendHandler}>Send message</Button>
+    <Button variant="contained" onClick={()=>sendHandler()}>Send message</Button>
   </form>
-}
-
-SendMessageForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired
 }

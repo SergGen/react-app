@@ -1,20 +1,15 @@
-import PropTypes from 'prop-types'
 import styles from './MessageList.module.css'
 import { Box } from '@material-ui/core'
+import {shallowEqual, useSelector} from "react-redux";
+import {getChats} from "../../../../store/chats/selectors";
+import {useParams} from "react-router-dom";
 
-export const MessageList = ({messageList}) => {
-
+export const MessageList = () => {
+  let {chatId} = useParams();
+  const chatsObj = useSelector(getChats, shallowEqual);
   return <Box className={styles.messages_list}>
-    {messageList.map(({messageTime, messageAuthor, messageText}) => <p key={messageTime+messageAuthor}>{messageAuthor}: {messageText}</p>)}
+    {chatsObj[chatId].messages.map(
+        ({msgTime, msgAuthor, msgText}) => <p key={msgTime+msgAuthor}>{msgAuthor}: {msgText}</p>
+    )}
   </Box>
-}
-
-export const MessageListTypes = {
-  messageTime: PropTypes.number.isRequired,
-  messageAuthor: PropTypes.string.isRequired,
-  messageText: PropTypes.string.isRequired
-}
-
-MessageList.propTypes = {
-  messageList: PropTypes.arrayOf(PropTypes.shape(MessageListTypes))
 }

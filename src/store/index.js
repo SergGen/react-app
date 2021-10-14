@@ -1,19 +1,12 @@
-import {createStore} from "@reduxjs/toolkit";
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import {profileSlice} from "./profile/slices";
+import {chatsSlice} from "./chats/slices";
 
-const defaultState = {
-    checkboxState1: false,
-    checkboxState2: false,
-}
+const rootReducer = combineReducers({
+    profileReducer: profileSlice.reducer,
+    chatsReducer: chatsSlice.reducer
+});
 
-const reducer = (state = defaultState, action) => {
-    switch (action?.type) {
-        case "CHECK1":
-            return {...state, checkboxState1: !state.checkboxState1};
-        case "CHECK2":
-            return {...state, checkboxState2: !state.checkboxState2};
-        default: return state;
-    }
-}
-
-export const store = createStore(reducer, composeWithDevTools());
+export const store = configureStore({
+    reducer: rootReducer
+});

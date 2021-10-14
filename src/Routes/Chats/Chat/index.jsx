@@ -1,67 +1,37 @@
-import PropTypes from 'prop-types'
-import {useState, useEffect} from 'react'
-import { MessageList, MessageListTypes } from './MessageList'
+import { MessageList } from './MessageList'
 import { SendMessageForm } from './SendMessageForm'
 import { Box } from '@material-ui/core'
+import {useParams} from "react-router-dom";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
+import {getChats} from "../../../store/chats/selectors";
+import {sendMessage} from "../../../store/chats/slices";
+import {useEffect} from "react";
 
-export const Chat = ({ chatId, chatList, onUpdateChat}) => {
+export const Chat = () => {
+    let {chatId} = useParams();
+    const chatsObj = useSelector(getChats, shallowEqual);
+    const dispatch = useDispatch();
 
-  let chat = {}
-  if(chatId){
-    chat = chatList.find(chat => chat.chatId === Number(chatId));
-  } else {
-    chat = chatList.slice()[0];
-  }
+    useEffect(() => {
+      if(chatsObj[chatId].messages.length > 0 &&
+          chatsObj[chatId].messages[chatsObj[chatId].messages.length - 1].msgAuthor !== 'Bot'){
+        setTimeout(() => {
+            dispatch(sendMessage({
+                chatId: chatId,
+                msgData: {
+                    author: 'Bot',
+                    text: `Hi! I\`m a bot.`
+                }
+            }));
+        }, 1500)
+      }
+    }, [chatsObj]);
 
-  const [currentChat, setCurrentChat] = useState( chat || {} );
-
-  useEffect(() => { setCurrentChat(chat) }, [chatList])
-
-  let onSubmit = (formState) => {
-    setCurrentChat({
-      chatId: currentChat.chatId,
-      chatName: currentChat.chatName,
-      messages: [
-        ...currentChat.messages,
-        {messageAuthor: 'You', messageText: formState, messageTime: Date.now()}
-      ]
-    });
-  }
-
-  useEffect(() => {
-    if(currentChat.messages.length > 0 && currentChat.messages[currentChat.messages.length - 1].messageAuthor !== 'Bot'){
-      setTimeout(() => {
-        setCurrentChat({
-          chatId: currentChat.chatId,
-          chatName: currentChat.chatName,
-          messages: [
-            ...currentChat.messages,
-            {messageAuthor: 'Bot', messageText: `Hi! I\`m a bot.`, messageTime: Date.now()}
-          ]
-        })
-      }, 1500)
-    }
-    onUpdateChat(currentChat);
-  }, [currentChat]);
-
-  if(!chatId){
-    return <Box><h1>Choose chat</h1></Box>
-  }
   return (
     <Box maxWidth="sm">
-      <SendMessageForm onSubmit={onSubmit} />
-      <MessageList messageList={currentChat.messages} />
+      <h3>{chatsObj[chatId].nameChat}</h3>
+      <SendMessageForm />
+      <MessageList />
     </Box>
   );
-}
-
-
-Chat.propTypes = {
-  chatList: PropTypes.arrayOf(PropTypes.shape({
-    chatId: PropTypes.number.isRequired,
-    chatName: PropTypes.string.isRequired,
-    messages: PropTypes.arrayOf(PropTypes.shape(MessageListTypes))
-  })),
-  onUpdateChat: PropTypes.func.isRequired,
-  chatId: PropTypes.string
 }

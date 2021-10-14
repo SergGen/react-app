@@ -1,40 +1,27 @@
 import { Box, Grid } from '@material-ui/core'
 import { ChatList } from './ChatList'
 import { Chat } from './Chat'
-import { useState } from 'react'
-import { Route, useParams } from 'react-router-dom'
-import { NotFound } from '../NotFound'
+import {Redirect, useParams} from 'react-router-dom'
+import {shallowEqual, useSelector} from "react-redux";
+import {getChats} from "../../store/chats/selectors";
 
 export const Chats = () => {
   let {chatId} = useParams();
-  const [chatList, setChatList] = useState([{chatId: Date.now(), chatName: 'Chat 1', messages: []}]);
+  const chatsObj = useSelector(getChats, shallowEqual);
 
-  let onAddNewChat = () => {
-    setChatList([...chatList, {chatId: Date.now(), chatName: 'Chat '+ (1 + chatList.length), messages: []}]);
-  }
-
-  let onRemoveChat = (removedChat) => {
-    if (chatList.length > 1) {
-      setChatList([...chatList.filter(chat => chat.chatId !== removedChat)]);
-    }
-  }
-
-  let onUpdateChat = (updatedChat) => {
-    setChatList([updatedChat,...chatList.filter(chat => chat.chatId !== updatedChat.chatId)]);
-  }
-  if(chatId && !chatList.find(chat => chat.chatId === Number(chatId))){
+  if(chatId && !Object.keys(chatsObj).find(chat => chat === chatId)){
     return (
-      <Route path="*" component={NotFound} />
+        <Redirect to="/chats" />
     )
   }
   return (
     <Box>
       <Grid container spacing={2}>
         <Grid item xs={2}>
-          <ChatList chatList={chatList} onAddNewChat={onAddNewChat} onRemoveChat={onRemoveChat} />
+          <ChatList />
         </Grid>
         <Grid item xs={10}>
-          <Chat chatId={chatId} chatList={chatList} onUpdateChat={onUpdateChat} />
+          {chatId ? <Chat /> : <Box><h1>Add or Choose chat</h1></Box>}
         </Grid>
       </Grid>
     </Box>
