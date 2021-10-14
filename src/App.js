@@ -1,24 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
+import {useState, useEffect} from 'react'
+import {RenderList} from './components/RenderList'
+import { Messages } from './components/Messages'
 
 function App() {
+  const [messages, setMessages] = useState([]);
+
+  let onSubmit = (formState) => {
+    setMessages([...messages, {author: 'You', text: formState}]);
+  }
+
+  useEffect(() => {
+    if(messages.length > 0 && messages[messages.length - 1].author !== 'Bot'){
+      setTimeout( () => {setMessages([...messages, {author: 'Bot', text: `Hi! I\`m a bot.`}])}, 1500);
+    }
+  }, [messages]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Messages onSubmit={onSubmit} />
+      <RenderList messageList={messages} />
+    </>
   );
 }
 

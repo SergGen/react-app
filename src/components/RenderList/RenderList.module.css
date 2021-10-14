@@ -1,0 +1,7 @@
+.messages_list {
+    margin: 0 auto;
+    width: 600px;
+    height: 100%;
+    border: 1px solid black;
+    padding: 15px;
+}
