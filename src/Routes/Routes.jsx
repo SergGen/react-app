@@ -4,6 +4,11 @@ import { NotFound } from './NotFound'
 import { Profile } from './Profile'
 import { Chats } from './Chats'
 
+/**
+ * Компонент-контейнер роутеров
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export const Routes = () => {
   return (
     <Switch>

@@ -5,6 +5,11 @@ import { Header } from './components/Header'
 import { Layout } from './components/Layout'
 import { Routes } from './Routes/Routes'
 
+/**
+ * Компонент-контейнер приложения
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function App() {
 
   return (

@@ -1,8 +1,12 @@
 import { Toolbar, Link } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
-// import {getPostsPath} from "../../navigation";
 import styles from './Header.module.css'
 
+/**
+ * Компонент header
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export const Header = () => {
 
   return (

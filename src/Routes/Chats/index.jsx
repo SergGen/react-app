@@ -1,15 +1,20 @@
 import { Box, Grid } from '@material-ui/core'
-import { ChatList } from './ChatList'
+import { ChatsList } from './ChatsList'
 import { Chat } from './Chat'
 import {Redirect, useParams} from 'react-router-dom'
-import {shallowEqual, useSelector} from "react-redux";
-import {getChats} from "../../store/chats/selectors";
+import {shallowEqual, useSelector} from 'react-redux'
+import {getChatsList} from '../../store/chats/chatsPart/selectors'
 
+/**
+ * Компонент-контейнер вкладки с чатами
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export const Chats = () => {
   let {chatId} = useParams();
-  const chatsObj = useSelector(getChats, shallowEqual);
+  const chatsList = useSelector(getChatsList, shallowEqual);
 
-  if(chatId && !Object.keys(chatsObj).find(chat => chat === chatId)){
+  if(chatId && !Object.keys(chatsList).find(chat => chat === chatId)){
     return (
         <Redirect to="/chats" />
     )
@@ -18,7 +23,7 @@ export const Chats = () => {
     <Box>
       <Grid container spacing={2}>
         <Grid item xs={2}>
-          <ChatList />
+          <ChatsList chatsList={chatsList} chatId={chatId} />
         </Grid>
         <Grid item xs={10}>
           {chatId ? <Chat /> : <Box><h1>Add or Choose chat</h1></Box>}
