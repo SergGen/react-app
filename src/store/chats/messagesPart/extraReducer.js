@@ -7,16 +7,17 @@ import {sendMessage} from "./slice";
  */
 export const sendMessageThunk = createAsyncThunk(
     "messagesPartReducer/sendMessageBot",
-    ({chatId, botCurrentName, botCurrentAnswer, newMsgData},{dispatch}) => {
+    ({chatId, botMsgData, newMsgData},{dispatch}) => {
         dispatch(sendMessage({chatId, newMsgData }));
-        if(newMsgData.author !== botCurrentName) {
+        if(newMsgData.author !== botMsgData.botCurrentName) {
             setTimeout(()=>{
                     dispatch(sendMessage(
                         {
                             chatId,
                             newMsgData: {
-                                author: botCurrentName,
-                                text: botCurrentAnswer
+                                id: botMsgData.botId,
+                                author: botMsgData.botCurrentName,
+                                text: botMsgData.botCurrentAnswer
                             }
                         }
                     ));
@@ -27,7 +28,7 @@ export const sendMessageThunk = createAsyncThunk(
     }
 );
 /**
- * Объект для обработки с состояний асинхронных функций
+ * Объект для обработки состояний асинхронных функций
  * @type {{}}
  */
 export const messagesPartExtraReducer = {}

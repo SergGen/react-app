@@ -1,4 +1,4 @@
-import {Box} from "@material-ui/core";
+import {Box, Typography} from "@mui/material";
 
 /**
  * Презентационнай компонент домашней страницы
@@ -8,7 +8,7 @@ import {Box} from "@material-ui/core";
 export const Home = () => {
   return (
     <Box>
-      <h1>Home</h1>
+      <Typography variant="h3" >Home</Typography>
     </Box>
   )
 }

@@ -1,9 +1,9 @@
-import { Box, Grid } from '@material-ui/core'
-import { ChatsList } from './ChatsList'
-import { Chat } from './Chat'
-import {Redirect, useParams} from 'react-router-dom'
-import {shallowEqual, useSelector} from 'react-redux'
-import {getChatsList} from '../../store/chats/chatsPart/selectors'
+import {Box, Grid, Typography} from '@mui/material';
+import { ChatsList } from './ChatsList';
+import { Chat } from './Chat';
+import {Redirect, useParams} from 'react-router-dom';
+import {shallowEqual, useSelector} from 'react-redux';
+import {getChatsList} from '../../store/chats/chatsPart/selectors';
 
 /**
  * Компонент-контейнер вкладки с чатами
@@ -26,7 +26,7 @@ export const Chats = () => {
           <ChatsList chatsList={chatsList} chatId={chatId} />
         </Grid>
         <Grid item xs={10}>
-          {chatId ? <Chat /> : <Box><h1>Add or Choose chat</h1></Box>}
+          {chatId ? <Chat /> : <Box><Typography variant="h3">Add or choose chat</Typography></Box>}
         </Grid>
       </Grid>
     </Box>

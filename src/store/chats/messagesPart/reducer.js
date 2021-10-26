@@ -8,13 +8,15 @@ export const messagesPartReducer = {
      * @param state
      * @param action
      */
-    sendMessage(state, action) {
-        if(state.messagesList[action.payload.chatId]){
-            state.messagesList[action.payload.chatId][`msg_${action.payload.newMsgData.author}_${Date.now().toString(36)}`] = {
+    sendMessage({messagesList}, {payload}) {
+        if(messagesList.hasOwnProperty(payload.chatId)){
+            messagesList[payload.chatId][`msg_${payload.newMsgData.id}_${Date.now().toString(36)}`] = {
                 msgTime: Date.now(),
-                msgAuthor: action.payload.newMsgData.author,
-                msgText: action.payload.newMsgData.text
+                msgAuthor: payload.newMsgData.author,
+                msgText: payload.newMsgData.text
             }
+        } else {
+            console.log('Error in "sendMessage". messagesList[payload.chatId] is not present.');
         }
     },
     /**
@@ -22,9 +24,11 @@ export const messagesPartReducer = {
      * @param state
      * @param action содержит идентификатор удаляемого списка сообщений чата
      */
-    deleteMessagesPart(state, action) {
-        if(state.messagesList[action.payload.chatKey]){
-            delete state.messagesList[action.payload.chatKey];
+    deleteMessagesPart({messagesList}, {payload}) {
+        if(messagesList.hasOwnProperty(payload.chatKey)){
+            delete messagesList[payload.chatKey];
+        } else {
+            console.log('Error in "deleteMessagesPart". messagesList[payload.chatKey] is not present.');
         }
     },
     /**
@@ -32,7 +36,7 @@ export const messagesPartReducer = {
      * @param state
      * @param action принимает время создания чата
      */
-    addMessagesPart(state, action) {
-        state.messagesList[`chat_${action.payload.timeCreate.toString(36)}`] = {}
+    addMessagesPart({messagesList}, {payload}) {
+        messagesList[`chat_${payload.timeCreate.toString(36)}`] = {}
     },
 }

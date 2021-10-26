@@ -5,19 +5,19 @@
  */
 export const getMessagesPartReducer = (store) => store.messagesPartReducer;
 /**
- * Возвращает объек со списками сообщений чатов
+ * Возвращает объект со списками сообщений чатов
  * @param store
  * @returns {*}
  */
 export const getMessagesList = (store) => getMessagesPartReducer(store).messagesList;
 /**
- * Возвращает объект со писском сообщений заданного чата
+ * Возвращает объект со списском сообщений заданного чата
  * @param {string} chatId идентификатор чата
  * @returns {function(*=): *}
  */
 export const getMessages = (chatId) => (store) => getMessagesList(store)[chatId];
 /**
- * Возвращает объект сообщения заданного по идентификатору
+ * Возвращает объект заданного по идентификатору сообщения
  * @param chatId идентификатор чата
  * @param msgId идентификатор сообщения
  * @returns {function(): *}

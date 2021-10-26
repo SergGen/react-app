@@ -8,10 +8,9 @@ export const chatsPartReducer = {
      * @param state
      * @param action принимает время создания нового чата
      */
-    addChatPart(state, action) {
-        state.chatsList[`chat_${action.payload.timeCreate.toString(36)}`] = {
-            chatName: `Chat ${Object.keys(state.chatsList).length + 1}`,
-            msgList: [],
+    addChatPart({chatsList}, {payload}) {
+        chatsList[`chat_${payload.timeCreate.toString(36)}`] = {
+            chatName: `Chat ${Object.keys(chatsList).length + 1}`,
             currentTextDraft: ''
         };
     },
@@ -20,9 +19,11 @@ export const chatsPartReducer = {
      * @param state
      * @param action принимает ключ, по которому удаляется чат из спика чатов
      */
-    deleteChatPart(state, action) {
-        if(state.chatsList[action.payload.chatKey]){
-            delete state.chatsList[action.payload.chatKey];
+    deleteChatPart({chatsList}, {payload}) {
+        if(chatsList.hasOwnProperty(payload.chatKey)){
+            delete chatsList[payload.chatKey];
+        } else {
+            throw new Error('ErrorFallback in "deleteChatPart". state.chatsList[action.payload.chatKey] is not present.');
         }
     },
     /**
@@ -30,9 +31,11 @@ export const chatsPartReducer = {
      * @param state
      * @param action принимает введённый текс
      */
-    catchCurrentTextDraft(state, action){
-        if(state.chatsList[action.payload.chatId]){
-            state.chatsList[action.payload.chatId].currentTextDraft = action.payload.currentTextDraft;
+    catchCurrentTextDraft({chatsList}, {payload}){
+        if(chatsList.hasOwnProperty(payload.chatId)){
+            chatsList[payload.chatId].currentTextDraft = payload.currentTextDraft;
+        } else {
+            throw new Error('ErrorFallback in "catchCurrentTextDraft". state.chatsList[action.payload.chatId] is not present.');
         }
     }
 }

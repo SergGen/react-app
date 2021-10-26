@@ -1,9 +1,12 @@
-import { Box, Button, Link, List, ListItem } from '@material-ui/core'
-import {Link as RouterLink} from 'react-router-dom'
-import styles from './ChatsList.module.css'
+import { Box, Button, List, ListItem } from '@mui/material';
+import {Link as RouterLink} from 'react-router-dom';
+import styles from './ChatsList.module.css';
 import {useDispatch} from "react-redux";
 import {addChatPart, deleteChatPart} from "../../../store/chats/chatsPart/slice";
 import {addMessagesPart, deleteMessagesPart} from "../../../store/chats/messagesPart/slice";
+import {useCallback} from "react";
+import PropTypes from "prop-types";
+import CloseIcon from '@mui/icons-material/Close';
 
 /**
  * Презентационный компонент отрисовки списка чатов
@@ -18,20 +21,20 @@ export const ChatsList = ({chatId, chatsList}) => {
     /**
      * Функция добавления нового чата
      */
-  const addChatHandler = () => {
+  const addChatHandler = useCallback( () => {
       let timeCreate = Date.now();
       dispatch(addChatPart({timeCreate}));
       dispatch(addMessagesPart({timeCreate}))
-  }
+  }, [dispatch]);
     /**
      * Функция удаления чата
      * @param {string} chatKey идентификатор удаляемого чата
      * @returns {(function(): void)|*}
      */
-  const deleteChatHandler = (chatKey) => () => {
+  const deleteChatHandler = useCallback( (chatKey) => () => {
       dispatch(deleteChatPart({chatKey}));
       dispatch(deleteMessagesPart({chatKey}));
-  }
+  },[dispatch]);
       return (
           <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
               {Object.keys(chatsList).length > 0 ?
@@ -39,30 +42,48 @@ export const ChatsList = ({chatId, chatsList}) => {
                       <List>
                           {Object.keys(chatsList).map((chatKey) =>
                               <ListItem disablePadding key={chatKey} className={styles.chat}>
-                                  {chatKey === chatId ? <Link
+                                  {chatKey === chatId ? <Button
                                           component={RouterLink}
                                           color="#DC143C"
-                                          variant="body2"
+                                          variant="string"
+                                          fullWidth
+                                          size='small'
                                           to={`/chats/${chatKey}`}
                                       >
                                           {chatsList[chatKey].chatName}
-                                      </Link> :
-                                      <Link
+                                      </Button> :
+                                      <Button
                                           component={RouterLink}
                                           color="inherit"
-                                          variant="body2"
+                                          variant="string"
+                                          size='small'
+                                          fullWidth
                                           to={`/chats/${chatKey}`}
                                       >
                                           {chatsList[chatKey].chatName}
-                                      </Link>
+                                      </Button>
                                   }
-                                  <Button size='small' variant="contained" onClick={deleteChatHandler(chatKey)}>X</Button>
+                                  <Button
+                                      size='small'
+                                      variant="contained"
+                                      onClick={deleteChatHandler(chatKey)}
+                                  >
+                                      <CloseIcon />
+                                  </Button>
                               </ListItem>
                           )}
                       </List>
                   </nav>
                   : ''}
-              <Button variant="contained" onClick={addChatHandler}>Add new chat</Button>
+              <Button variant="text" fullWidth onClick={addChatHandler}>Add new chat</Button>
           </Box>
       );
+}
+
+ChatsList.propTypes = {
+  chatsList: PropTypes.objectOf(PropTypes.shape({
+    chatName: PropTypes.string.isRequired,
+    currentTextDraft: PropTypes.string.isRequired,
+  })),
+  chatId: PropTypes.string
 }

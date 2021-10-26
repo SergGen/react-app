@@ -8,9 +8,11 @@ export const profileReducers = {
      * @param state
      * @param action
      */
-    changeName(state, action) {
-        if(state[action.payload.nameProfile]) {
-            state[action.payload.nameProfile] = action.payload.newName;
+    changeName(state, {payload}) {
+        if(state.hasOwnProperty(payload.nameProfile)) {
+            state[payload.nameProfile].name = payload.newName;
+        } else {
+            console.log('ErrorFallback in "changeName". state[action.payload.nameProfile] is not present.');
         }
     },
     /**
@@ -18,7 +20,7 @@ export const profileReducers = {
      * @param state
      * @param action
      */
-    changeBotAnswer(state, action) {
-        state.botAnswer = action.payload.newBotAnswer;
+    changeBotAnswer({botData}, {payload}) {
+        botData.answer = payload.newBotAnswer;
     }
 }

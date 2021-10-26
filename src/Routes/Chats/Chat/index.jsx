@@ -1,6 +1,6 @@
-import { MessagesList } from './MessagesList'
-import { SendMessageForm } from './SendMessageForm'
-import { Box } from '@material-ui/core'
+import { MessagesList } from './MessagesList';
+import { SendMessageForm } from './SendMessageForm';
+import {Box, Typography} from '@mui/material';
 import {useParams} from "react-router-dom";
 import {shallowEqual, useSelector} from "react-redux";
 import {getChat} from "../../../store/chats/chatsPart/selectors";
@@ -18,7 +18,7 @@ export const Chat = () => {
 
   return (
     <Box maxWidth="sm">
-      <h3>{chat.chatName}</h3>
+      <Typography variant="h5">{chat.chatName}</Typography>
       <SendMessageForm />
       <MessagesList messages={messages} />
     </Box>

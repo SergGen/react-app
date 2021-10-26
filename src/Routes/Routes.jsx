@@ -1,8 +1,8 @@
-import { Route, Switch } from 'react-router-dom'
-import { Home } from './Home'
-import { NotFound } from './NotFound'
-import { Profile } from './Profile'
-import { Chats } from './Chats'
+import { Route, Switch } from 'react-router-dom';
+import { Home } from './Home';
+import { NotFound } from './NotFound';
+import { Profile } from './Profile';
+import { Chats } from './Chats';
 
 /**
  * Компонент-контейнер роутеров
