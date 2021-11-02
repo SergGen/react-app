@@ -8,9 +8,9 @@ export const profileReducers = {
      * @param state
      * @param action
      */
-    changeName(state, {payload}) {
-        if(state.hasOwnProperty(payload.nameProfile)) {
-            state[payload.nameProfile].name = payload.newName;
+    changeName(state, action) {
+        if(state.hasOwnProperty(action.payload.nameProfile)) {
+            state[action.payload.nameProfile].name = action.payload.newName;
         } else {
             console.log('ErrorFallback in "changeName". state[action.payload.nameProfile] is not present.');
         }
@@ -20,7 +20,10 @@ export const profileReducers = {
      * @param state
      * @param action
      */
-    changeBotAnswer({botData}, {payload}) {
-        botData.answer = payload.newBotAnswer;
+    changeBotAnswer(state, action) {
+        state.botData.answer = action.payload.newBotAnswer;
+    },
+    changeId(state, action){
+        state[action.payload.nameProfile].id = action.payload.id;
     }
 }

@@ -16,4 +16,4 @@ export const chatsPartSlice = createSlice({
 /**
  * Экшены списка чатов
  */
-export const {addChatPart, deleteChatPart, catchCurrentTextDraft} = chatsPartSlice.actions;
+export const {addChatPart, deleteChatPart, catchCurrentTextDraft, dropChatsPart} = chatsPartSlice.actions;

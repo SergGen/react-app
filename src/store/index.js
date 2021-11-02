@@ -1,7 +1,8 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import {profileSlice} from "./profile/slices";
+import {profileSlice} from "./profile/slice";
 import {chatsPartSlice} from "./chats/chatsPart/slice";
 import {messagesPartSlice} from "./chats/messagesPart/slice";
+import {gistsSlice} from "./gists/slice";
 import {autoMergeLevel1, persistReducer, persistStore} from "reduxjs-toolkit-persist/es";
 import storage from 'reduxjs-toolkit-persist/lib/storage'
 import {FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE} from "reduxjs-toolkit-persist/es/constants";
@@ -15,7 +16,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
     profileReducer: profileSlice.reducer,
     chatsPartReducer: chatsPartSlice.reducer,
-    messagesPartReducer: messagesPartSlice.reducer
+    messagesPartReducer: messagesPartSlice.reducer,
+    gistsReducer: gistsSlice.reducer
 });
 
 const _persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -1,15 +1,18 @@
-import {Box, Button, Input, TextareaAutosize, Typography} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
-import {changeBotAnswer, changeName} from "../../store/profile/slices";
+import {changeBotAnswer, changeName} from "../../store/profile/slice";
 import {useCallback, useState} from "react";
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
 import {
     getUserName, getBotName, getBotAnswer,
     USER_DATA, BOT_DATA,
     BOT_DEFAULT_ANSWER, BOT_DEFAULT_NAME, USER_DEFAULT_NAME
 } from "../../store/profile/selectors";
+import {ErrorFallback} from "../../components/ErrorFallback";
+import {ErrorBoundary} from "react-error-boundary";
+import {ChangeName} from "./ChangeName";
+import {ChangeAnswer} from "./ChangeAnswer";
 /**
- * Компонет профиля
+ * Компонет-контейнер профиля
  * @returns {JSX.Element}
  * @constructor
  */
@@ -106,33 +109,20 @@ export const Profile = () => {
     },[dispatch]);
 
     return (
-    <Box>
-        <Typography variant="h3">Profile</Typography>
-        <Box>
-            <Typography component="p">User current name - "{userCurrentName}"</Typography>
-            <Input value={userName} onChange={changeUserNameHandler} />
-            <Button onClick={onChangeName(USER_DATA, userName)}>Confirm change</Button>
-            {acceptUserName ? <CheckTwoToneIcon/> : ''}
-        </Box>
-        <Box>
-            <Typography component="p">Bot current - "{botCurrentName}"</Typography>
-            <Input value={botName} onChange={changeBotNameHandler} />
-            <Button onClick={onChangeName(BOT_DATA, botName)}>Confirm change</Button>
-            {acceptBotName ? <CheckTwoToneIcon/> : ''}
-        </Box>
-        <Box>
-            <TextareaAutosize
-                aria-label="bot_answer"
-                placeholder="Write your message here"
-                style={{ width: 182 }}
-                minRows={4}
-                value={botAnswer}
-                onChange={changeBotAnswerHandler}
-            />
-            <Button onClick={onChangeBotAnswer(botAnswer)}>Confirm change</Button>
-            {acceptBotAnswer ? <CheckTwoToneIcon/> : ''}
-        </Box>
-        <Button onClick={onDefaultDrop}>Default</Button>
+    <Box component="form" onSubmit={(event) => event.preventDefault()}>
+        <ErrorBoundary FallbackComponent = {ErrorFallback} onReset={onDefaultDrop}>
+            <Typography variant="h3">Profile</Typography>
+            <ChangeName acceptName={acceptUserName} personId={USER_DATA} personName={USER_DEFAULT_NAME}
+                        onChangeName={onChangeName} changeNameHandler={changeUserNameHandler}
+                        newName={userName} currentName={userCurrentName} />
+            <ChangeName acceptName={acceptBotName} personId={BOT_DATA} personName={BOT_DEFAULT_NAME}
+                        onChangeName={onChangeName} changeNameHandler={changeBotNameHandler}
+                        newName={botName} currentName={botCurrentName} />
+            <ChangeAnswer acceptAnswer={acceptBotAnswer} personName={botCurrentName} personId={BOT_DATA}
+                          changeAnswerHandler={changeBotAnswerHandler} onChangeAnswer={onChangeBotAnswer}
+                          newAnswer={botAnswer}  currentAnswer={botCurrentAnswer} />
+            <Button onClick={onDefaultDrop}>Set Default</Button>
+        </ErrorBoundary>
     </Box>
   )
 }

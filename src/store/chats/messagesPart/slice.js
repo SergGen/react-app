@@ -1,6 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {messagesPartReducer} from "./reducer";
-import {messagesPartExtraReducer} from "./extraReducer";
 
 /**
  * Слайс списков сообщений чатов
@@ -12,9 +11,8 @@ export const messagesPartSlice = createSlice({
         messagesList: {},
     },
     reducers: messagesPartReducer,
-    extraReducers: messagesPartExtraReducer
 });
 /**
  * Экшены списков сообщений чатов
  */
-export const { sendMessage, deleteMessagesPart, addMessagesPart } = messagesPartSlice.actions;
+export const { sendMessage, deleteMessagesPart, addMessagesPart, dropMessagesPart } = messagesPartSlice.actions;

@@ -6,24 +6,23 @@ import {sendMessage} from "./slice";
  * @type {AsyncThunk<unknown, void, {}>}
  */
 export const sendMessageThunk = createAsyncThunk(
-    "messagesPartReducer/sendMessageBot",
+    "messagesPartReducer/sendMessageThunk",
     ({chatId, botMsgData, newMsgData},{dispatch}) => {
         dispatch(sendMessage({chatId, newMsgData }));
         if(newMsgData.author !== botMsgData.botCurrentName) {
             setTimeout(()=>{
-                    dispatch(sendMessage(
-                        {
-                            chatId,
-                            newMsgData: {
-                                id: botMsgData.botId,
-                                author: botMsgData.botCurrentName,
-                                text: botMsgData.botCurrentAnswer
-                            }
+                dispatch(sendMessage(
+                    {
+                        chatId,
+                        newMsgData: {
+                            id: botMsgData.botId,
+                            author: botMsgData.botCurrentName,
+                            text: botMsgData.botCurrentAnswer
                         }
-                    ));
+                    }
+                ));
                 },
-                1500
-            )
+            1500)
         }
     }
 );
@@ -31,4 +30,4 @@ export const sendMessageThunk = createAsyncThunk(
  * Объект для обработки состояний асинхронных функций
  * @type {{}}
  */
-export const messagesPartExtraReducer = {}
+// export const messagesPartExtraReducer = {}

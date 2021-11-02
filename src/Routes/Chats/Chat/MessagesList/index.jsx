@@ -1,4 +1,3 @@
-import styles from './MessagesList.module.css';
 import {Box, Typography} from '@mui/material';
 import PropTypes from "prop-types";
 
@@ -10,14 +9,10 @@ import PropTypes from "prop-types";
  */
 export const MessagesList = ({messages}) => {
 
-
-
-
-// Заменить msgAuthor в key на id
-    return <Box className={styles.messages_list}>
-      {Object.values(messages).map(
-          ({msgTime, msgAuthor, msgText}) =>
-              <Typography component="p" key={msgTime + msgAuthor} >{msgAuthor} ({new Date(msgTime).toISOString()}): {msgText}</Typography>
+    return <Box>
+      {Object.entries(messages).map(
+          ([key, {msgTime, msgAuthor, msgText}]) =>
+              <Typography component="p" key={key} >{msgAuthor} ({new Date(msgTime).toISOString()}): {msgText}</Typography>
       )}
     </Box>
 }

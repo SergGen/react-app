@@ -1,5 +1,5 @@
 import { Link as RouterLink } from 'react-router-dom';
-import {Box, Button} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 
 /**
  * Презентационный компонент ненайденной страницы
@@ -9,13 +9,8 @@ import {Box, Button} from "@mui/material";
 export const NotFound = () => {
   return (
     <Box>
-      <h1>Page not found</h1>
-        <Button
-            component={RouterLink}
-            key="home"
-            variant="body2"
-            to="/"
-        >
+      <Typography variant="h4">Page not found</Typography>
+      <Button component={RouterLink} key="home" variant="contained" to="/" >
         Go to home
       </Button>
     </Box>

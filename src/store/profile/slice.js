@@ -22,4 +22,4 @@ export const profileSlice = createSlice({
     reducers: profileReducers
 });
 
-export const { changeName, changeBotAnswer } = profileSlice.actions;
+export const { changeName, changeBotAnswer, changeId } = profileSlice.actions;
