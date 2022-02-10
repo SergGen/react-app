@@ -29,6 +29,8 @@ export const getBotAnswer = (store) => store.profileReducer.botData.answer;
  */
 export const getBotId = (store) => store.profileReducer.botData.id;
 
+export const getUserAuth = (store) => store.profileReducer.userData.userAuthEmail;
+
 /**
  * Константы
  * @type {string}

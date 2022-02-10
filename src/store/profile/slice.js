@@ -11,7 +11,8 @@ export const profileSlice = createSlice({
     initialState: {
         userData: {
             name: USER_DEFAULT_NAME,
-            id: nanoid(10)
+            id: nanoid(10),
+            userAuthEmail: ''
         },
         botData: {
             name: BOT_DEFAULT_NAME,
@@ -22,4 +23,4 @@ export const profileSlice = createSlice({
     reducers: profileReducers
 });
 
-export const { changeName, changeBotAnswer, changeId } = profileSlice.actions;
+export const { changeName, changeBotAnswer, changeId, setUserAuth } = profileSlice.actions;

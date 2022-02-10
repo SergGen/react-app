@@ -5,12 +5,13 @@ import {useCallback, useState} from "react";
 import {
     getUserName, getBotName, getBotAnswer,
     USER_DATA, BOT_DATA,
-    BOT_DEFAULT_ANSWER, BOT_DEFAULT_NAME, USER_DEFAULT_NAME
+    BOT_DEFAULT_ANSWER, BOT_DEFAULT_NAME, USER_DEFAULT_NAME, getUserAuth
 } from "../../store/profile/selectors";
 import {ErrorFallback} from "../../components/ErrorFallback";
 import {ErrorBoundary} from "react-error-boundary";
 import {ChangeName} from "./ChangeName";
 import {ChangeAnswer} from "./ChangeAnswer";
+import {LogoutMessage} from "../../components/LogoutMessage";
 /**
  * Компонет-контейнер профиля
  * @returns {JSX.Element}
@@ -18,15 +19,16 @@ import {ChangeAnswer} from "./ChangeAnswer";
  */
 export const Profile = () => {
     const dispatch = useDispatch();
-    let userCurrentName = useSelector(getUserName, shallowEqual);
-    let botCurrentName = useSelector(getBotName, shallowEqual);
-    let botCurrentAnswer = useSelector(getBotAnswer, shallowEqual)
-    let [userName, setUserName] = useState('');
-    let [botName, setBotName] = useState('');
-    let [botAnswer, setBotAnswer] = useState(botCurrentAnswer);
-    let [acceptBotAnswer, setAcceptBotAnswer] = useState(false);
-    let [acceptBotName, setAcceptBotName] = useState(false);
-    let [acceptUserName, setAcceptUserName] = useState(false);
+    const userCurrentName = useSelector(getUserName, shallowEqual);
+    const botCurrentName = useSelector(getBotName, shallowEqual);
+    const botCurrentAnswer = useSelector(getBotAnswer, shallowEqual)
+    const [userName, setUserName] = useState('');
+    const [botName, setBotName] = useState('');
+    const [botAnswer, setBotAnswer] = useState(botCurrentAnswer);
+    const [acceptBotAnswer, setAcceptBotAnswer] = useState(false);
+    const [acceptBotName, setAcceptBotName] = useState(false);
+    const [acceptUserName, setAcceptUserName] = useState(false);
+    const userAuthEmail = useSelector(getUserAuth, shallowEqual);
     /**
      * Изменяет имя пользователя или бота в зависимости от заданного nameProfile
      * @param {string} nameProfile указатель смены имени
@@ -110,19 +112,22 @@ export const Profile = () => {
 
     return (
     <Box component="form" onSubmit={(event) => event.preventDefault()}>
-        <ErrorBoundary FallbackComponent = {ErrorFallback} onReset={onDefaultDrop}>
-            <Typography variant="h3">Profile</Typography>
-            <ChangeName acceptName={acceptUserName} personId={USER_DATA} personName={USER_DEFAULT_NAME}
-                        onChangeName={onChangeName} changeNameHandler={changeUserNameHandler}
-                        newName={userName} currentName={userCurrentName} />
-            <ChangeName acceptName={acceptBotName} personId={BOT_DATA} personName={BOT_DEFAULT_NAME}
-                        onChangeName={onChangeName} changeNameHandler={changeBotNameHandler}
-                        newName={botName} currentName={botCurrentName} />
-            <ChangeAnswer acceptAnswer={acceptBotAnswer} personName={botCurrentName} personId={BOT_DATA}
-                          changeAnswerHandler={changeBotAnswerHandler} onChangeAnswer={onChangeBotAnswer}
-                          newAnswer={botAnswer}  currentAnswer={botCurrentAnswer} />
-            <Button onClick={onDefaultDrop}>Set Default</Button>
-        </ErrorBoundary>
+        {userAuthEmail ?
+            <ErrorBoundary FallbackComponent = {ErrorFallback} onReset={onDefaultDrop}>
+                <Typography variant="h3">Profile</Typography>
+                <ChangeName acceptName={acceptUserName} personId={USER_DATA} personName={USER_DEFAULT_NAME}
+                            onChangeName={onChangeName} changeNameHandler={changeUserNameHandler}
+                            newName={userName} currentName={userCurrentName} />
+                <ChangeName acceptName={acceptBotName} personId={BOT_DATA} personName={BOT_DEFAULT_NAME}
+                            onChangeName={onChangeName} changeNameHandler={changeBotNameHandler}
+                            newName={botName} currentName={botCurrentName} />
+                <ChangeAnswer acceptAnswer={acceptBotAnswer} personName={botCurrentName} personId={BOT_DATA}
+                              changeAnswerHandler={changeBotAnswerHandler} onChangeAnswer={onChangeBotAnswer}
+                              newAnswer={botAnswer} currentAnswer={botCurrentAnswer} />
+                <Button onClick={onDefaultDrop}>Set Default</Button>
+            </ErrorBoundary> :
+            <LogoutMessage />
+        }
     </Box>
   )
 }

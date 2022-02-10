@@ -13,8 +13,6 @@ import {DataOutput} from "./DataOutput";
 import {Buttons} from "./Buttons";
 import {SetRequestParams} from "./SetRequestParams";
 
-// Разобраться с выбором в Header
-
 /**
  * Компонент-контейнер Gists
  * @returns {JSX.Element}

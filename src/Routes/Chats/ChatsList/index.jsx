@@ -6,7 +6,7 @@ import {addMessagesPart, deleteMessagesPart} from "../../../store/chats/messages
 import {useCallback} from "react";
 import PropTypes from "prop-types";
 import DeleteIcon from '@mui/icons-material/Close';
-import {CHATS_PATH} from "../../Routes";
+import {CHATS_PATH} from "../../RoutesBlock";
 
 /**
  * Презентационный компонент отрисовки списка чатов
@@ -35,6 +35,7 @@ export const ChatsList = ({chatId, chatsList}) => {
       dispatch(deleteChatPart({chatKey}));
       dispatch(deleteMessagesPart({chatKey}));
   },[dispatch]);
+
       return (
           <Box component='nav' sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
               <List>

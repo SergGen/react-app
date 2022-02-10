@@ -19,13 +19,13 @@ export const Chat = () => {
     let {chatId} = useParams();
     const messages = useSelector(getMessages(chatId), shallowEqual);
     const dispatch = useDispatch();
-    let areaInput = useRef(null);
+    const areaInput = useRef(null);
     const chat = useSelector(getChat(chatId), shallowEqual);
-    let userCurrentName = useSelector(getUserName, shallowEqual);
-    let userId = useSelector(getUserId,shallowEqual);
-    let botCurrentName = useSelector(getBotName, shallowEqual);
-    let botCurrentAnswer = useSelector(getBotAnswer, shallowEqual);
-    let botId =useSelector(getBotId, shallowEqual);
+    const userCurrentName = useSelector(getUserName, shallowEqual);
+    const userId = useSelector(getUserId,shallowEqual);
+    const botCurrentName = useSelector(getBotName, shallowEqual);
+    const botCurrentAnswer = useSelector(getBotAnswer, shallowEqual);
+    const botId = useSelector(getBotId, shallowEqual);
     /**
      * Функция для запоминания черновика
      * @param event событие ввода текста
@@ -38,7 +38,7 @@ export const Chat = () => {
      */
     useEffect(() => {
         areaInput.current?.focus();
-    },[])
+    },[]);
     /**
      * Обработчик отправки введённого сообщения
      * @param event событие начала отправки по клику мыши или нажатию клавиш клавиатуры
@@ -55,11 +55,12 @@ export const Chat = () => {
             dispatch(catchCurrentTextDraft({chatId, currentTextDraft: ''}));
             areaInput.current.focus();
         }
-    },[botCurrentAnswer, botCurrentName, botId, chat.currentTextDraft, chatId, dispatch, userCurrentName, userId]);
+    },[botCurrentAnswer, botCurrentName, botId, chat?.currentTextDraft, chatId, dispatch, userCurrentName, userId]);
 
   return (
     <Box maxWidth="sm">
-      <Typography variant="h5">{chat.chatName}</Typography>
+        {chat?.chatName ? <Typography variant="h5">{chat?.chatName}</Typography> :
+            <Typography variant="h4">Add or choose chat</Typography>}
       <SendMessageForm chat={chat} onCatchText={onCatchText} sendHandler={sendHandler} areaInput={areaInput} />
       <MessagesList messages={messages} />
     </Box>

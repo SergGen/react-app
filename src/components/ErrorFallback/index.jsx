@@ -2,6 +2,13 @@ import {Button, Container, Typography} from "@mui/material";
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import PropTypes from "prop-types";
 
+/**
+ * Компонет - предохранитель
+ * @param {Object} error - Объект ошибки
+ * @param {Function} resetErrorBoundary - Функция сброса состояния
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export const ErrorFallback = ({error, resetErrorBoundary}) => {
     return <Container >
         <DangerousIcon fontSize="large" />
@@ -12,6 +19,6 @@ export const ErrorFallback = ({error, resetErrorBoundary}) => {
 }
 
 ErrorFallback.propTypes = {
-    error: PropTypes.string.isRequired,
+    error: PropTypes.object.isRequired,
     resetErrorBoundary: PropTypes.func.isRequired
 }

@@ -10,9 +10,7 @@ export const NotFound = () => {
   return (
     <Box>
       <Typography variant="h4">Page not found</Typography>
-      <Button component={RouterLink} key="home" variant="contained" to="/" >
-        Go to home
-      </Button>
+      <Button component={RouterLink} key="home" variant="contained" to="/" >Go to home</Button>
     </Box>
   )
 }

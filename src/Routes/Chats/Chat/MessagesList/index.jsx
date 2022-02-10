@@ -10,10 +10,10 @@ import PropTypes from "prop-types";
 export const MessagesList = ({messages}) => {
 
     return <Box>
-      {Object.entries(messages).map(
+      {messages ? Object.entries(messages).map(
           ([key, {msgTime, msgAuthor, msgText}]) =>
               <Typography component="p" key={key} >{msgAuthor} ({new Date(msgTime).toISOString()}): {msgText}</Typography>
-      )}
+      ) : ''}
     </Box>
 }
 

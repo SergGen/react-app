@@ -10,6 +10,7 @@ import {FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE} from "reduxjs-toolkit
 const persistConfig = {
     key: 'root',
     storage: storage,
+    version: 1,
     stateReconciler: autoMergeLevel1,
 };
 

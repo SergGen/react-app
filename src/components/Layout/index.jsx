@@ -1,15 +1,19 @@
-import { Box } from '@mui/material';
+import {Box, Container} from '@mui/material';
+import {Header} from "../Header";
+import {Outlet} from "react-router-dom";
 
 /**
- * Компонент разметки
- * @param children
+ * Презентационный компонент разметки рабочей области
  * @returns {JSX.Element}
  * @constructor
  */
-export const Layout = ({children}) => {
+export const Layout = () => {
   return (
     <Box>
-      {children}
+      <Header/>
+      <Container>
+        <Outlet />
+      </Container>
     </Box>
   );
 };
